@@ -156,6 +156,42 @@ const getAllCtems = async (req, res) => {
     }
 }
 
+const getCtemsByAvailablity = async (req, res) => {
+    try {
+        const { day, time } = req.params;
+
+        if (!day || !time) {
+            return res.status(400).json({ message: 'Both "day" and "time" are required parameters.' });
+        }
+
+        // Convert the given time to minutes
+        const [inputHour, inputMinute] = time.split(':').map(Number);
+        const inputTimeInMinutes = inputHour * 60 + inputMinute;
+
+        // Fetch all matching records for the given day
+        const accounts = await CtemsAccount.find({
+            daysAvailable: { $in: [day] },
+        });
+
+        // Filter records based on time comparison
+        const results = accounts.filter((account) => {
+            const [startHour, startMinute] = account.startTime.split(':').map(Number);
+            const startTimeInMinutes = startHour * 60 + startMinute;
+
+            const [endHour, endMinute] = account.endTime.split(':').map(Number);
+            const endTimeInMinutes = endHour * 60 + endMinute;
+
+            return inputTimeInMinutes >= startTimeInMinutes && inputTimeInMinutes <= endTimeInMinutes;
+        });
+
+        return res.status(200).json(results);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: 500, msg: error.message, data: null });
+    }
+};
+
+
 
 const updateProfile = async (req, res) => {
     try {
@@ -191,5 +227,4 @@ const updatePhone = async (req, res) => {
     }
 }
 
-
-module.exports = { createAccount, resendOtp, verifyOtp, loginAccount, getUserById, updateEquiments, getAllCtems, updateProfile,updatePhone }
+module.exports = { createAccount, resendOtp, verifyOtp, loginAccount, getUserById, updateEquiments, getAllCtems, updateProfile,updatePhone,getCtemsByAvailablity }
