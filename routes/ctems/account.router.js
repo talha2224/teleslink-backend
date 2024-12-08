@@ -10,7 +10,7 @@ router.post("/login",loginAccount)
 router.post("/resend/otp",resendOtp)
 router.post("/verify/otp",verifyOtp)
 router.get("/get/:id",getUserById)
-router.get("/availablity/:day/:time",getCtemsByAvailablity)
+router.get("/availablity/:day/:startTime/:endTime",getCtemsByAvailablity)
 router.get("/all",getAllCtems)
 router.put("/update-equipments/:id",updateEquiments)
 

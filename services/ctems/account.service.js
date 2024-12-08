@@ -158,30 +158,36 @@ const getAllCtems = async (req, res) => {
 
 const getCtemsByAvailablity = async (req, res) => {
     try {
-        const { day, time } = req.params;
+        const { day, startTime, endTime } = req.params;
 
-        if (!day || !time) {
-            return res.status(400).json({ message: 'Both "day" and "time" are required parameters.' });
+        if (!day || !startTime || !endTime) {
+            return res.status(400).json({ message: 'Parameters "day", "startTime", and "endTime" are required.' });
         }
 
-        // Convert the given time to minutes
-        const [inputHour, inputMinute] = time.split(':').map(Number);
-        const inputTimeInMinutes = inputHour * 60 + inputMinute;
+        const [startHour, startMinute] = startTime.split(':').map(Number);
+        const inputStartInMinutes = startHour * 60 + startMinute;
 
-        // Fetch all matching records for the given day
+        const [endHour, endMinute] = endTime.split(':').map(Number);
+        const inputEndInMinutes = endHour * 60 + endMinute;
+
+        // Fetch all records for the specified day
         const accounts = await CtemsAccount.find({
             daysAvailable: { $in: [day] },
         });
 
-        // Filter records based on time comparison
+        // Filter accounts based on time range
         const results = accounts.filter((account) => {
-            const [startHour, startMinute] = account.startTime.split(':').map(Number);
-            const startTimeInMinutes = startHour * 60 + startMinute;
+            const [accStartHour, accStartMinute] = account.startTime.split(':').map(Number);
+            const accountStartInMinutes = accStartHour * 60 + accStartMinute;
 
-            const [endHour, endMinute] = account.endTime.split(':').map(Number);
-            const endTimeInMinutes = endHour * 60 + endMinute;
+            const [accEndHour, accEndMinute] = account.endTime.split(':').map(Number);
+            const accountEndInMinutes = accEndHour * 60 + accEndMinute;
 
-            return inputTimeInMinutes >= startTimeInMinutes && inputTimeInMinutes <= endTimeInMinutes;
+            // Check if the account's time range overlaps with the input time range
+            return (
+                inputStartInMinutes <= accountEndInMinutes &&
+                inputEndInMinutes >= accountStartInMinutes
+            );
         });
 
         return res.status(200).json(results);
@@ -190,6 +196,7 @@ const getCtemsByAvailablity = async (req, res) => {
         return res.status(500).json({ status: 500, msg: error.message, data: null });
     }
 };
+
 
 
 
