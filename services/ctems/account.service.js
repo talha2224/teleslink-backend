@@ -190,7 +190,7 @@ const getCtemsByAvailablity = async (req, res) => {
             );
         });
 
-        return res.status(200).json(results);
+        return res.status(200).json({msg:null,status:200,data:results});
     } catch (error) {
         console.error(error);
         return res.status(500).json({ status: 500, msg: error.message, data: null });
