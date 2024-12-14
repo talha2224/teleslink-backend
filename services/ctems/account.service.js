@@ -97,7 +97,7 @@ const loginAccount = async (req, res) => {
                 let validTill = new Date(new Date().setMinutes(new Date().getMinutes() + 5))
                 let update = await CtemsAccount.findByIdAndUpdate(findAccount?._id, { otp, otpValidTill: validTill }, { new: true })
                 await sendDynamicMail("verification", findAccount?.email, findAccount?.name, otp)
-                return res.status(403).json({ status: 403, msg: "Your account is not verified we have sent otp to your email", data: null })
+                return res.status(403).json({data:findAccount?._id,status: 403, msg: "Your account is not verified we have sent otp to your email", data: null })
             }
             else {
                 let compare = await bcrypt.compare(password, findAccount?.password)
