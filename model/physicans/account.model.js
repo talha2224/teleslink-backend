@@ -18,12 +18,10 @@ const accountSchema = mongoose.Schema({
     daysAvailable:{type:Array,required:true},
     startTime:{type:String,required:true},
     endTime:{type:String,required:true},
-
-
     otp: {type: Number,default: null},
     otpValidTill: {type: Date,default: null},
     otpVerified: {type: Boolean,default: false},
-
+    resetVerified: {type: Boolean,default: false},
 })
 
 

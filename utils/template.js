@@ -19,12 +19,12 @@ module.exports = {
       
         <body style='background-color:#fafaf5;padding-top:5px'>
           <div style='display:flex;margin-bottom:10px;margin-top:10px'>
-            <img src='https://ibb.co/qp7VjSD' alt=''style='height:2.5rem;margin-left:auto;margin-right:auto' />
+            <img src='https://iili.io/2SMf6l4.png' alt=''style='height:2.5rem;margin-left:auto;margin-right:auto' />
           </div>
           <div style='display:flex;border-radius:10px;padding:10px;height:max-content;'>
             <div class='container' style='background-color:white;margin-left:auto;margin-right:auto;border-radius:10px;padding:10px;height:max-content;'>
               <div style='text-align:center'>
-                <img src='https://ibb.co/qp7VjSD'style='height:225px;' />
+                <img src='https://iili.io/2SMf6l4.png'style='height:225px;' />
               </div>
               <div>
                 <p>Hi <strong>${name},</strong></p>
